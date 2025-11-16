@@ -1,0 +1,196 @@
+/* src/components/SignupFormStep2.css */
+
+.signup-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.signup-container::before {
+  content: '';
+  position: absolute;
+  width: 150%;
+  height: 150%;
+  background: url('../assets/Logo.png') no-repeat center center;
+  background-size: cover;
+  opacity: 0.2; 
+  z-index: -1;
+}
+
+.signup-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 8px;
+  background: #4fc3f7;
+  z-index: 10;
+}
+
+.form-wrapper {
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+}
+
+.form-wrapper h1 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.form-wrapper .subtitle {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
+}
+
+.form-wrapper h2 {
+  font-size: 1.4rem;
+  color: #444;
+  margin-bottom: 1.5rem;
+}
+
+.input-group {
+  margin-bottom: 1.2rem;
+  text-align: left;
+}
+
+.input-group label {
+  display: block;
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 0.5rem;
+}
+
+.input-group input {
+  width: 93%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #4fc3f7;
+  box-shadow: 0 0 0 2px rgba(79, 195, 247, 0.2);
+}
+
+.sign-in-btn {
+  width: 90%;
+  padding: 0.75rem;
+  background: #4fc3f7;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: 1rem;
+}
+
+.sign-in-btn:hover {
+  background: #29b6f6;
+}
+
+.social-login {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.or-divider {
+  display: block;
+  font-size: 0.9rem;
+  color: #999;
+  margin-bottom: 0.5rem;
+}
+
+.social-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.social-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.social-btn:hover {
+  transform: scale(1.1);
+}
+
+.social-btn.facebook {
+  background: #3b5998;
+  color: white;
+}
+
+.social-btn.google {
+  background: #db4437;
+  color: white;
+}
+
+.social-btn.instagram {
+  background: linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
+  color: white;
+}
+
+.login-link {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.login-link a {
+  color: #4fc3f7;
+  text-decoration: underline;
+  margin-left: 0.25rem;
+}
+
+.login-link a:hover {
+  color: #29b6f6;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .form-wrapper {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+
+  .form-wrapper h1 {
+    font-size: 1.5rem;
+  }
+
+  .form-wrapper h2 {
+    font-size: 1.2rem;
+  }
+
+  .social-btn {
+    width: 45px;
+    height: 45px;
+    font-size: 1rem;
+  }
+}
