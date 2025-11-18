@@ -1,17 +1,18 @@
 // src/components/SignupFormStep2.jsx
-import React, { useState } from 'react';
-import './SignupFormStep2.css';
+import React, { useState } from "react";
+import "./SignupFormStep2.css";
+import instagramIcon from "../assets/instagram.png";
 
 const SignupFormStep2 = (props) => {
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    confirmPassword: ''
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = (e) => {
@@ -20,9 +21,9 @@ const SignupFormStep2 = (props) => {
       alert("Passwords don't match!");
       return;
     }
-    console.log('Account Created:', formData);
-    alert('Welcome! Account created successfully.');
-    
+    console.log("Account Created:", formData);
+    alert("Welcome! Account created successfully.");
+
     if (props.onNext) {
       props.onNext();
     }
@@ -37,7 +38,8 @@ const SignupFormStep2 = (props) => {
       <div className="form-wrapper">
         <h1>Let's get started</h1>
         <p className="subtitle">
-          This game enhances your intelligence, swift adjustment, teamwork, quick thinking, and decision making
+          This game enhances your intelligence, swift adjustment, teamwork,
+          quick thinking, and decision making
         </p>
         <h2>Hello, Newcomer</h2>
 
@@ -81,8 +83,15 @@ const SignupFormStep2 = (props) => {
             />
           </div>
 
-          <button type="submit" className="sign-in-btn" onClick={(e) => { e.preventDefault(); props.onNext(); }}>
-          Sign in
+          <button
+            type="submit"
+            className="sign-in-btn"
+            onClick={(e) => {
+              e.preventDefault();
+              props.onNext();
+            }}
+          >
+            Sign in
           </button>
 
           <div className="social-login">
@@ -91,23 +100,27 @@ const SignupFormStep2 = (props) => {
               <button
                 type="button"
                 className="social-btn facebook"
-                onClick={() => handleSocialLogin('Facebook')}
+                onClick={() => handleSocialLogin("Facebook")}
               >
                 f
               </button>
               <button
                 type="button"
                 className="social-btn google"
-                onClick={() => handleSocialLogin('Google')}
+                onClick={() => handleSocialLogin("Google")}
               >
                 G
               </button>
               <button
                 type="button"
                 className="social-btn instagram"
-                onClick={() => handleSocialLogin('Instagram')}
+                onClick={() => handleSocialLogin("Instagram")}
               >
-                📸
+                <img
+                  src={instagramIcon}
+                  alt="Instagram"
+                  className="social-icon"
+                />
               </button>
             </div>
           </div>
