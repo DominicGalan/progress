@@ -21,13 +21,15 @@ const SignupFormStep2 = (props) => {
       return;
     }
     console.log('Account Created:', formData);
-    // Add your API call or navigation logic here
     alert('Welcome! Account created successfully.');
+    
+    if (props.onNext) {
+      props.onNext();
+    }
   };
 
   const handleSocialLogin = (platform) => {
     alert(`Logging in with ${platform}...`);
-    // Add actual OAuth logic later
   };
 
   return (
@@ -62,6 +64,7 @@ const SignupFormStep2 = (props) => {
               value={formData.password}
               onChange={handleChange}
               required
+              placeholder="••••••••"
             />
           </div>
 
@@ -74,11 +77,12 @@ const SignupFormStep2 = (props) => {
               value={formData.confirmPassword}
               onChange={handleChange}
               required
+              placeholder="••••••••"
             />
           </div>
 
-          <button type="submit" className="sign-in-btn">
-            Sign in
+          <button type="submit" className="sign-in-btn" onClick={(e) => { e.preventDefault(); props.onNext(); }}>
+          Sign in
           </button>
 
           <div className="social-login">
