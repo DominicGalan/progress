@@ -1,7 +1,8 @@
 // src/components/SignupFormStep2.jsx
 import React, { useState } from "react";
+import { collection, addDoc } from "firebase/firestore"; // Import Firestore functions
+import { db } from "../firebaseConfig"; // Correct path
 import "./SignupFormStep2.css";
-import instagramIcon from "../assets/instagram.png";
 
 const SignupFormStep2 = (props) => {
   const [formData, setFormData] = useState({
@@ -10,27 +11,45 @@ const SignupFormStep2 = (props) => {
     confirmPassword: "",
   });
 
+  const [error, setError] = useState("");
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords don't match!");
+      setError("Passwords don't match!");
       return;
     }
-    console.log("Account Created:", formData);
-    alert("Welcome! Account created successfully.");
 
-    if (props.onNext) {
-      props.onNext();
+    try {
+      // Save email and password to Firestore
+      await addDoc(collection(db, "users"), {
+        email: formData.email,
+        password: formData.password,
+      });
+      console.log("Account Created:", formData);
+      alert("Welcome! Account created successfully.");
+
+      // Navigate to Login page
+      if (props.onNext) {
+        props.onNext(); // Trigger navigation to LoginForm
+      }
+    } catch (error) {
+      console.error("Error saving account:", error);
+      setError("Failed to create account. Please try again.");
     }
   };
 
   const handleSocialLogin = (platform) => {
-    alert(`Logging in with ${platform}...`);
+    const urls = {
+      Facebook: "https://www.facebook.com/login",
+      Google: "https://accounts.google.com/signin",
+    };
+    window.open(urls[platform], "_blank");
   };
 
   return (
@@ -83,14 +102,9 @@ const SignupFormStep2 = (props) => {
             />
           </div>
 
-          <button
-            type="submit"
-            className="sign-in-btn"
-            onClick={(e) => {
-              e.preventDefault();
-              props.onNext();
-            }}
-          >
+          {error && <p className="error">{error}</p>}
+
+          <button type="submit" className="sign-in-btn">
             Sign in
           </button>
 
@@ -111,17 +125,6 @@ const SignupFormStep2 = (props) => {
               >
                 G
               </button>
-              <button
-                type="button"
-                className="social-btn instagram"
-                onClick={() => handleSocialLogin("Instagram")}
-              >
-                <img
-                  src={instagramIcon}
-                  alt="Instagram"
-                  className="social-icon"
-                />
-              </button>
             </div>
           </div>
 
@@ -129,6 +132,14 @@ const SignupFormStep2 = (props) => {
             Already have an Account? <a href="/login">Log in</a>
           </div>
         </form>
+
+        <button
+          type="button"
+          className="back-btn"
+          onClick={props.onBack} // Navigate back to Signup Step 1
+        >
+          Back
+        </button>
       </div>
     </div>
   );

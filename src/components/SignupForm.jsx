@@ -1,27 +1,57 @@
 // src/components/SignupForm.jsx
-import React, { useState } from 'react';
-import './SignupForm.css';
+import React, { useState } from "react";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../firebaseConfig"; // Correct path
+import "./SignupForm.css";
 
-// ✅ CORRECT: Added 'props' as parameter
 const SignupForm = (props) => {
   const [formData, setFormData] = useState({
-    name: '',
-    nickname: '',
-    gender: '',
-    age: '',
-    grade: ''
+    name: "",
+    nickname: "",
+    gender: "",
+    age: "",
+    grade: "",
   });
+
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.name) newErrors.name = "Please input Your Name here";
+    if (!formData.nickname) newErrors.nickname = "Please input Your Nickname here";
+    if (!formData.gender) newErrors.gender = "Please input Your Gender here";
+    if (!formData.age) newErrors.age = "Please input Your Age here";
+    if (!formData.grade) newErrors.grade = "Please input Your Grade here";
+    return newErrors;
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form Data:', formData);
-    // Add your API call or navigation logic here
-    alert('Welcome aboard!');
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+    } else {
+      setErrors({});
+      try {
+        await addDoc(collection(db, "users"), {
+          name: formData.name,
+          nickname: formData.nickname,
+          gender: formData.gender,
+          age: formData.age,
+          grade: formData.grade,
+        });
+        console.log("Profile data saved successfully!");
+        props.onNext(); // Navigate to Signup Step 2
+      } catch (error) {
+        console.error("Error saving profile data:", error);
+        alert("Failed to save data. Please try again.");
+      }
+    }
   };
 
   return (
@@ -29,7 +59,7 @@ const SignupForm = (props) => {
       <div className="form-wrapper">
         <h1>Let's get started</h1>
         <p className="subtitle">
-          This game enhances your intelligence, swift adjustment, teamwork, quick thinking, and decision making
+          This game enhances your intelligence, swift adjustment, teamwork, quick thinking, and decision making.
         </p>
         <h2>Hello, Newcomer</h2>
 
@@ -42,8 +72,8 @@ const SignupForm = (props) => {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              required
             />
+            {errors.name && <p className="error">{errors.name}</p>}
           </div>
 
           <div className="input-group">
@@ -54,8 +84,8 @@ const SignupForm = (props) => {
               name="nickname"
               value={formData.nickname}
               onChange={handleChange}
-              required
             />
+            {errors.nickname && <p className="error">{errors.nickname}</p>}
           </div>
 
           <div className="input-group">
@@ -66,8 +96,8 @@ const SignupForm = (props) => {
               name="gender"
               value={formData.gender}
               onChange={handleChange}
-              required
             />
+            {errors.gender && <p className="error">{errors.gender}</p>}
           </div>
 
           <div className="input-group">
@@ -78,10 +108,10 @@ const SignupForm = (props) => {
               name="age"
               value={formData.age}
               onChange={handleChange}
-              required
               min="1"
               max="120"
             />
+            {errors.age && <p className="error">{errors.age}</p>}
           </div>
 
           <div className="input-group">
@@ -92,18 +122,11 @@ const SignupForm = (props) => {
               name="grade"
               value={formData.grade}
               onChange={handleChange}
-              required
             />
+            {errors.grade && <p className="error">{errors.grade}</p>}
           </div>
 
-          <button 
-            type="submit" 
-            className="next-btn"
-            onClick={(e) => { 
-              e.preventDefault(); 
-              props.onNext(); 
-            }}
-          >
+          <button type="submit" className="next-btn">
             Next
           </button>
         </form>

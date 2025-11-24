@@ -175,6 +175,20 @@
   color: #29b6f6;
 }
 
+.back-btn {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #ccc;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.back-btn:hover {
+  background-color: #bbb;
+}
+
 /* Responsive */
 @media (max-width: 480px) {
   .form-wrapper {
