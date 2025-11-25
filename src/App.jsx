@@ -1,40 +1,50 @@
-import React, { useState } from "react";
-import SignupForm from "./components/SignupForm.jsx";
-import SignupFormStep2 from "./components/SignupFormStep2.jsx";
-import LoginForm from "./components/LoginForm.jsx";
-import HomeScreen from "./components/HomeScreen.jsx";
+import React, { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebaseConfig";
+
+import LoginForm from "./components/LoginForm";
+import SignupForm from "./components/SignupForm";
+import SignupFormStep2 from "./components/SignupFormStep2";
+import HomeScreen from "./components/HomeScreen";
 
 function App() {
-  const [currentStep, setCurrentStep] = useState("login"); // Tracks the current step: "login", "signup1", "signup2", "home"
+  const [user, setUser] = useState(null);
+  const [signupData, setSignupData] = useState(null);
 
-  const handleLoginSuccess = (userData) => {
-    if (userData) {
-      console.log("User logged in:", userData);
-      setCurrentStep("home"); // Navigate to HomeScreen after successful login
-    } else {
-      setCurrentStep("signup1"); // Switch to Signup Step 1
-    }
-  };
-
-  const handleSignupNext = () => {
-    setCurrentStep("signup2"); // Switch to Signup Step 2
-  };
-
-  const handleSignupBack = () => {
-    setCurrentStep("signup1"); // Go back to Signup Step 1
-  };
-
-  const handleSignupComplete = () => {
-    setCurrentStep("login"); // Navigate to Login page after signup
-  };
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (current) => {
+      setUser(current);
+    });
+    return unsubscribe;
+  }, []);
 
   return (
-    <div className="App">
-      {currentStep === "login" && <LoginForm onLoginSuccess={handleLoginSuccess} />}
-      {currentStep === "signup1" && <SignupForm onNext={handleSignupNext} />}
-      {currentStep === "signup2" && <SignupFormStep2 onBack={handleSignupBack} onNext={handleSignupComplete} />}
-      {currentStep === "home" && <HomeScreen />}
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          element={user ? <Navigate to="/home" /> : <LoginForm />}
+        />
+        <Route
+          path="/signup1"
+          element={<SignupForm onNext={(data) => setSignupData(data)} />}
+        />
+        <Route
+          path="/signup2"
+          element={
+            <SignupFormStep2
+              initialData={signupData}
+              onComplete={() => Navigate("/")}
+            />
+          }
+        />
+        <Route
+          path="/home"
+          element={user ? <HomeScreen /> : <Navigate to="/" />}
+        />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

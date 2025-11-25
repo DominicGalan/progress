@@ -1,145 +1,73 @@
-// src/components/SignupFormStep2.jsx
 import React, { useState } from "react";
-import { collection, addDoc } from "firebase/firestore"; // Import Firestore functions
-import { db } from "../firebaseConfig"; // Correct path
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { auth, db } from "../firebaseConfig";
+import { useNavigate } from "react-router-dom";
 import "./SignupFormStep2.css";
 
-const SignupFormStep2 = (props) => {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
-
+const SignupFormStep2 = ({ initialData }) => {
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((p) => ({ ...p, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
-      setError("Passwords don't match!");
-      return;
-    }
-
+    setError("");
     try {
-      // Save email and password to Firestore
-      await addDoc(collection(db, "users"), {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        formData.email,
+        formData.password
+      );
+      const user = userCredential.user;
+
+      // Save profile data to Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        ...initialData,
         email: formData.email,
-        password: formData.password,
+        createdAt: new Date().toISOString()
       });
-      console.log("Account Created:", formData);
-      alert("Welcome! Account created successfully.");
 
-      // Navigate to Login page
-      if (props.onNext) {
-        props.onNext(); // Trigger navigation to LoginForm
-      }
-    } catch (error) {
-      console.error("Error saving account:", error);
-      setError("Failed to create account. Please try again.");
+      navigate("/"); // go to login page
+    } catch (err) {
+      console.error("Signup error:", err);
+      setError("Couldn’t create account. Try again.");
     }
-  };
-
-  const handleSocialLogin = (platform) => {
-    const urls = {
-      Facebook: "https://www.facebook.com/login",
-      Google: "https://accounts.google.com/signin",
-    };
-    window.open(urls[platform], "_blank");
   };
 
   return (
     <div className="signup-container">
       <div className="form-wrapper">
-        <h1>Let's get started</h1>
-        <p className="subtitle">
-          This game enhances your intelligence, swift adjustment, teamwork,
-          quick thinking, and decision making
-        </p>
-        <h2>Hello, Newcomer</h2>
-
+        <h1>Create Login</h1>
         <form onSubmit={handleSubmit}>
           <div className="input-group">
-            <label htmlFor="email">Your Email</label>
+            <label>Email</label>
             <input
-              type="email"
-              id="email"
               name="email"
+              type="email"
               value={formData.email}
               onChange={handleChange}
               required
-              placeholder="example@email.com"
             />
           </div>
-
           <div className="input-group">
-            <label htmlFor="password">Create Password</label>
+            <label>Password</label>
             <input
-              type="password"
-              id="password"
               name="password"
+              type="password"
               value={formData.password}
               onChange={handleChange}
               required
-              placeholder="••••••••"
             />
           </div>
-
-          <div className="input-group">
-            <label htmlFor="confirmPassword">Repeat Password</label>
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              required
-              placeholder="••••••••"
-            />
-          </div>
-
           {error && <p className="error">{error}</p>}
-
-          <button type="submit" className="sign-in-btn">
-            Sign in
-          </button>
-
-          <div className="social-login">
-            <span className="or-divider">OR</span>
-            <div className="social-buttons">
-              <button
-                type="button"
-                className="social-btn facebook"
-                onClick={() => handleSocialLogin("Facebook")}
-              >
-                f
-              </button>
-              <button
-                type="button"
-                className="social-btn google"
-                onClick={() => handleSocialLogin("Google")}
-              >
-                G
-              </button>
-            </div>
-          </div>
-
-          <div className="login-link">
-            Already have an Account? <a href="/login">Log in</a>
-          </div>
+          <button className="sign-in-btn" type="submit">Finish</button>
         </form>
-
-        <button
-          type="button"
-          className="back-btn"
-          onClick={props.onBack} // Navigate back to Signup Step 1
-        >
-          Back
-        </button>
       </div>
     </div>
   );

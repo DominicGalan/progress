@@ -4,9 +4,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
+  position: fixed;    /* ensures it fills the screen */
+  top: 0;
+  left: 0;
   overflow: hidden;
 }
+
 
 .form-wrapper {
   padding: 2rem;
@@ -16,6 +19,7 @@
   max-width: 400px;
   text-align: center;
   backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.65); /* optional: improves visibility */
 }
 
 .form-wrapper h1 {
