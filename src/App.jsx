@@ -1,3 +1,4 @@
+// src/App.jsx
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
@@ -10,11 +11,11 @@ import HomeScreen from "./components/HomeScreen";
 
 function App() {
   const [user, setUser] = useState(null);
-  const [signupData, setSignupData] = useState(null);
+  const [signupProfile, setSignupProfile] = useState(null); // renamed for clarity
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (current) => {
-      setUser(current);
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
     });
     return unsubscribe;
   }, []);
@@ -22,27 +23,38 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Home route: redirect based on auth */}
         <Route
           path="/"
-          element={user ? <Navigate to="/home" /> : <LoginForm />}
+          element={user ? <Navigate to="/home" replace /> : <LoginForm />}
         />
+
+        {/* Step 1: collect profile info */}
         <Route
           path="/signup1"
-          element={<SignupForm onNext={(data) => setSignupData(data)} />}
+          element={<SignupForm onNext={setSignupProfile} />}
         />
+
+        {/* Step 2: create account + save data */}
         <Route
           path="/signup2"
           element={
-            <SignupFormStep2
-              initialData={signupData}
-              onComplete={() => Navigate("/")}
-            />
+            signupProfile ? (
+              <SignupFormStep2 initialData={signupProfile} />
+            ) : (
+              <Navigate to="/signup1" replace />
+            )
           }
         />
+
+        {/* Protected home screen */}
         <Route
           path="/home"
-          element={user ? <HomeScreen /> : <Navigate to="/" />}
+          element={user ? <HomeScreen /> : <Navigate to="/" replace />}
         />
+
+        {/* Optional: catch-all redirect */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   );

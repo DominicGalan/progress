@@ -4,90 +4,150 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  position: fixed;    /* ensures it fills the screen */
+  position: fixed;
   top: 0;
   left: 0;
   overflow: hidden;
+  background: linear-gradient(135deg, #1a2a6c, #2a5298); /* deep blue game-like gradient */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-
 
 .form-wrapper {
-  padding: 2rem;
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
   text-align: center;
-  backdrop-filter: blur(10px);
-  background: rgba(255, 255, 255, 0.65); /* optional: improves visibility */
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.85);
+  position: relative;
+  border: 2px solid rgba(79, 195, 247, 0.5);
 }
 
+/* Game-style header */
 .form-wrapper h1 {
+  font-size: 2.2rem;
+  color: #0d47a1;
+  margin-bottom: 0.8rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.form-wrapper::before {
+  content: "🎮";
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #4fc3f7;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 1.8rem;
-  color: #333;
-  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
 .input-group {
-  margin-bottom: 1.2rem;
+  margin-bottom: 1.4rem;
   text-align: left;
 }
 
 .input-group label {
   display: block;
-  font-size: 0.9rem;
-  color: #555;
+  font-size: 0.95rem;
+  color: #0d47a1;
+  font-weight: 600;
   margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .input-group input {
-  width: 93%;
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  width: 100%;
+  padding: 0.9rem;
+  border: 2px solid #bbdefb;
+  border-radius: 12px;
   font-size: 1rem;
-  transition: border-color 0.3s ease;
+  color: #0d47a1;
+  transition: all 0.3s ease;
+  background: #f5fbff;
+  box-sizing: border-box;
+  font-weight: 500;
 }
 
 .input-group input:focus {
   outline: none;
-  border-color: #4fc3f7;
-  box-shadow: 0 0 0 2px rgba(79, 195, 247, 0.2);
+  border-color: #0d47a1;
+  box-shadow: 0 0 0 3px rgba(13, 71, 161, 0.2);
+  background: #fff;
 }
 
+/* Game button */
 .login-btn {
-  width: 90%;
-  padding: 0.75rem;
-  background: #4fc3f7;
+  width: 100%;
+  padding: 0.95rem;
+  background: linear-gradient(to right, #0d47a1, #1976d2);
   color: white;
   border: none;
-  border-radius: 8px;
-  font-size: 1.1rem;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: all 0.3s ease;
   margin-top: 1rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  box-shadow: 0 4px 10px rgba(13, 71, 161, 0.3);
 }
 
 .login-btn:hover {
-  background: #29b6f6;
+  background: linear-gradient(to right, #1976d2, #0d47a1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(13, 71, 161, 0.4);
+}
+
+.login-btn:active {
+  transform: translateY(0);
 }
 
 .error {
-  color: red;
-  font-size: 0.9rem;
-  margin-top: 0.5rem;
+  color: #d32f2f;
+  font-size: 0.95rem;
+  margin-top: 0.6rem;
+  font-weight: 600;
 }
 
 .switch-link {
-  margin-top: 1rem;
-  font-size: 0.9rem;
-  color: #555;
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+  color: #333;
 }
 
-.switch-link button {
-  background: none;
-  border: none;
+.switch-link a {
+  color: #0d47a1;
+  text-decoration: none;
+  font-weight: 700;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.switch-link a:hover {
+  border-bottom-color: #0d47a1;
+}
+
+/* Optional: Add a subtle arena vibe */
+.form-wrapper::after {
+  content: "Level Up Your Learning";
+  position: absolute;
+  bottom: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.85rem;
   color: #4fc3f7;
-  cursor: pointer;
-  text-decoration: underline;
+  font-weight: 600;
 }

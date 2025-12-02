@@ -1,3 +1,5 @@
+/* src/components/SoloGame.css */
+
 .solo-container {
   width: 100%;
   height: 100vh;
@@ -5,85 +7,180 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #FFF57D 0%, #4FC3F7 100%);
+  background: linear-gradient(135deg, #1a2a6c, #2a5298);
   padding: 2rem;
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .solo-container h1 {
-  font-size: 2.5rem;
-  color: #333;
-  margin-bottom: 1rem;
+  font-size: 2.6rem;
+  color: white;
+  margin-bottom: 0.8rem;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
 .solo-container p {
   font-size: 1.2rem;
-  color: #555;
-  margin-bottom: 2rem;
+  color: #bbd7ff;
+  margin-bottom: 2.2rem;
+  text-align: center;
+  max-width: 600px;
 }
 
+/* ========== PROGRESS BAR (Optional) ========== */
+.progress-bar {
+  width: 80%;
+  max-width: 500px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  margin-bottom: 2rem;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(to right, #4fc3f7, #29b6f6);
+  width: 30%; /* Update dynamically in React */
+  transition: width 0.4s ease;
+}
+
+/* ========== QUESTION CARD ========== */
 .question-card {
   width: 100%;
-  max-width: 600px;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  padding: 2rem;
+  max-width: 620px;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 20px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  padding: 2.2rem;
   text-align: center;
+  position: relative;
 }
 
 .question-card h2 {
-  font-size: 1.5rem;
-  color: #333;
-  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  color: #0d47a1;
+  margin-bottom: 1.8rem;
+  line-height: 1.4;
 }
 
+/* ========== OPTIONS ========== */
 .options {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.1rem;
+  margin-bottom: 1.5rem;
 }
 
 .option-btn {
-  padding: 0.75rem 1.5rem;
-  background: #f1f1f1;
-  border: 2px solid #ddd;
-  border-radius: 8px;
+  padding: 1rem 1.8rem;
+  background: #f8fbff;
+  border: 2px solid #bbdefb;
+  border-radius: 14px;
   cursor: pointer;
-  font-size: 1rem;
-  transition: background 0.3s ease, border-color 0.3s ease;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #0d47a1;
+  transition: all 0.25s ease;
+  text-align: left;
+  position: relative;
 }
 
 .option-btn:hover {
-  background: #4fc3f7;
+  background: #e3f2fd;
   border-color: #4fc3f7;
-  color: #fff;
+  transform: translateX(4px);
 }
 
 .option-btn.selected {
-  background: #4fc3f7;
-  border-color: #4fc3f7;
-  color: #fff;
+  background: #e3f2fd;
+  border-color: #0d47a1;
+  color: #0d47a1;
+  font-weight: 700;
 }
 
-.submit-btn,
-.next-btn {
-  margin-top: 1.5rem;
-  padding: 0.75rem 1.5rem;
-  background: #4fc3f7;
-  color: #fff;
+/* Correct/Incorrect feedback */
+.option-btn.correct {
+  background: #e8f5e9;
+  border-color: #4caf50;
+  color: #2e7d32;
+}
+
+.option-btn.incorrect {
+  background: #ffebee;
+  border-color: #f44336;
+  color: #c62828;
+}
+
+/* ========== BUTTONS ========== */
+.action-btn {
+  margin-top: 1.2rem;
+  padding: 0.95rem 2.2rem;
+  background: linear-gradient(to right, #0d47a1, #1976d2);
+  color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 14px;
   cursor: pointer;
-  font-size: 1.1rem;
-  transition: background 0.3s ease;
+  font-size: 1.2rem;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 12px rgba(13, 71, 161, 0.3);
 }
 
-.submit-btn:hover,
-.next-btn:hover {
-  background: #29b6f6;
+.action-btn:hover {
+  background: linear-gradient(to right, #1976d2, #0d47a1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(13, 71, 161, 0.4);
 }
 
-.submit-btn:disabled {
-  background: #ddd;
+.action-btn:disabled {
+  opacity: 0.6;
   cursor: not-allowed;
+  transform: none;
+}
+
+/* ========== SCORE DISPLAY (Optional) ========== */
+.score-display {
+  position: absolute;
+  top: -36px;
+  right: 20px;
+  background: #4fc3f7;
+  color: #0d47a1;
+  font-weight: 800;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 600px) {
+  .solo-container {
+    padding: 1.5rem;
+  }
+
+  .solo-container h1 {
+    font-size: 2rem;
+  }
+
+  .question-card {
+    padding: 1.8rem 1.4rem;
+  }
+
+  .question-card h2 {
+    font-size: 1.5rem;
+  }
+
+  .option-btn {
+    padding: 0.9rem 1.4rem;
+    font-size: 1.05rem;
+  }
+
+  .action-btn {
+    padding: 0.85rem 1.8rem;
+    font-size: 1.1rem;
+  }
 }
